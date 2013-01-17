@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.zcore.maven</groupId>
+	<artifactId>merge-maven-plugin</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>maven-plugin</packaging>
+
+	<name>Maven Merge Plugin</name>
+	<description>Merges multiple files into one</description>
+	<url>http://www.zcore.org/merge-maven-plugin</url>
+	<inceptionYear>2013</inceptionYear>
+	<organization>
+		<name>ZCore</name>
+		<url>http://www.zcore.org</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+		<developer>
+			<id>rob</id>
+			<name>Robert Heine</name>
+			<email>robert.heine@zcore.org</email>
+			<url>http://www.zcore.org</url>
+			<organization>Zcore</organization>
+			<organizationUrl>http://www.zcore.org</organizationUrl>
+			<roles>
+				<role>owner</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/rob19780114/merge-maven-plugin</url>
+	</issueManagement>
+	
+	<scm>
+		<connection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</connection>
+		<url>https://github.com/rob19780114/merge-maven-plugin.git</url>
+	</scm>
+	
+	<prerequisites>
+		<maven>3.0.4</maven>
+	</prerequisites>
+	
+	<build>
+		<defaultGoal>install</defaultGoal>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.1.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.6</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.4.3</version>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>3.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.2</version>
+		</dependency>
+	</dependencies>
+</project>
