@@ -43,6 +43,14 @@
 		<system>GitHub</system>
 		<url>https://github.com/rob19780114/merge-maven-plugin</url>
 	</issueManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>artifactory</id>
+			<name>ZCore.repo</name>
+			<url>http://artifacts.zcore.org/artifactory</url>
+		</repository>
+	</distributionManagement>
 	
 	<scm>
 		<connection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</connection>
