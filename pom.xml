@@ -2,19 +2,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.zcore.maven</groupId>
 	<artifactId>merge-maven-plugin</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>maven-plugin</packaging>
-
-	<repositories>
-		<repository>
-			<id>internal.repo</id>
-			<name>Zcore Artifactory</name>
-			<url>http://artifacts.zcore.org/artifactory/libs-releases-local</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 	<name>Maven Merge Plugin</name>
 	<description>Merges multiple files into one</description>
@@ -49,7 +38,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+	
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/rob19780114/merge-maven-plugin</url>
@@ -59,8 +48,7 @@
 		<connection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</connection>
 		<url>https://github.com/rob19780114/merge-maven-plugin.git</url>
 		<developerConnection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</developerConnection>
-	  <tag>merge-maven-plugin-0.0.1</tag>
-  </scm>
+	</scm>
 	
 	<prerequisites>
 		<maven>3.0.4</maven>
