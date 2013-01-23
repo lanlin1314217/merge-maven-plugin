@@ -42,7 +42,7 @@ public class MergeMojo extends AbstractMojo {
      * @required
      * @parameter
      */
-    private Merger[] mergers;
+    private transient Merger[] mergers;
 
     /**
      * Opens an OutputStream, based on the supplied file
@@ -50,7 +50,7 @@ public class MergeMojo extends AbstractMojo {
      * @return {@linkplain OutputStream}
      * @throws MojoExecutionException
      */
-    protected OutputStream initOutput(File file) throws MojoExecutionException {
+    protected OutputStream initOutput(final File file) throws MojoExecutionException {
 	// stream to return
 	final OutputStream stream;
 	// plenty of things can go wrong...
@@ -79,9 +79,10 @@ public class MergeMojo extends AbstractMojo {
 			+ fileDirectory.getAbsolutePath());
 	    }
 	    // file file is for any reason not creatable?
-	    if (!file.createNewFile())
+	    if (!file.createNewFile()) {
 		throw new MojoExecutionException("Could not create file: "
 			+ file.getAbsolutePath());
+	    }
 	    // finally create some file
 	    stream = new FileOutputStream(file);
 	} catch (FileNotFoundException e) {
@@ -101,7 +102,7 @@ public class MergeMojo extends AbstractMojo {
      * @return {@linkplain InputStream}
      * @throws MojoExecutionException
      */
-    protected InputStream initInput(File file) throws MojoExecutionException {
+    protected InputStream initInput(final File file) throws MojoExecutionException {
 	InputStream stream = null;
 	try {
 	    if (file.isDirectory()) {
@@ -136,10 +137,10 @@ public class MergeMojo extends AbstractMojo {
 	    // get list of source files
 	    final List<File> sources = Arrays.asList(merger.getSources());
 	    // ...and use a stream
-	    OutputStream targetStream = initOutput(target);
+	    final OutputStream targetStream = initOutput(target);
 	    // iterate source files
 	    for (File source : sources) {
-		InputStream sourceStream = initInput(source);
+		final InputStream sourceStream = initInput(source);
 		// append
 		appendStream(sourceStream, targetStream);
 		// close source
@@ -170,7 +171,8 @@ public class MergeMojo extends AbstractMojo {
      * @param out {@linkplain OutputStream}
      * @throws MojoExecutionException
      */
-    protected void appendStream(InputStream in, OutputStream out) throws MojoExecutionException {
+    protected void appendStream(final InputStream in, final OutputStream out)
+	    throws MojoExecutionException {
 	// prebuffer
 	int character;
 	try {
