@@ -48,7 +48,7 @@
 		<repository>
 			<id>zcore-repo</id>
 			<name>Releases repository at zcore.org</name>
-			<url>http://artifacts.zcore.org/artifactory/libs-releases-local</url>
+			<url>http://artifacts.zcore.org/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>
 			<id>zcore-snap-repo</id>
