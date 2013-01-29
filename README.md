@@ -1,7 +1,7 @@
 # merge-maven-plugin
 Maven(3) plugin which merges multiple files into one
 
-## Configuration exmaple:
+## Configuration exmaple
 <pre>
 &lt;mergers&gt;
 &nbsp;&nbsp;&lt;merge&gt;
