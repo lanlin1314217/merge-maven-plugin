@@ -44,19 +44,6 @@
 		<url>https://github.com/rob19780114/merge-maven-plugin</url>
 	</issueManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>zcore-repo</id>
-			<name>Releases repository at zcore.org</name>
-			<url>http://artifacts.zcore.org/artifactory/libs-release-local</url>
-		</repository>
-		<snapshotRepository>
-			<id>zcore-snap-repo</id>
-			<name>Snapshot repository at zcore.org</name>
-			<url>http://artifacts.zcore.org/artifactory/libs-snapshot-local</url>
-		</snapshotRepository>
-	</distributionManagement>
-	
 	<scm>
 		<connection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</connection>
 		<url>https://github.com/rob19780114/merge-maven-plugin.git</url>
