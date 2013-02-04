@@ -44,6 +44,19 @@
 		<url>https://github.com/rob19780114/merge-maven-plugin</url>
 	</issueManagement>
 
+	<distributionManagement>
+		<repository>
+			<id>sonatype-stages</id>
+			<name>Stages repository at oss.sonatype.org</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-snapshots</id>
+			<name>Snapshot repository at oss.sonataype.org</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 	<scm>
 		<connection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</connection>
 		<url>https://github.com/rob19780114/merge-maven-plugin.git</url>
