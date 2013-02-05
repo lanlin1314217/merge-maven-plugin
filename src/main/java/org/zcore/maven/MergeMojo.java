@@ -50,7 +50,8 @@ public class MergeMojo extends AbstractMojo {
      * @return {@linkplain OutputStream}
      * @throws MojoExecutionException
      */
-    protected OutputStream initOutput(final File file) throws MojoExecutionException {
+    protected OutputStream initOutput(final File file)
+	    throws MojoExecutionException {
 	// stream to return
 	final OutputStream stream;
 	// plenty of things can go wrong...
@@ -102,7 +103,8 @@ public class MergeMojo extends AbstractMojo {
      * @return {@linkplain InputStream}
      * @throws MojoExecutionException
      */
-    protected InputStream initInput(final File file) throws MojoExecutionException {
+    protected InputStream initInput(final File file)
+	    throws MojoExecutionException {
 	InputStream stream = null;
 	try {
 	    if (file.isDirectory()) {
@@ -148,8 +150,9 @@ public class MergeMojo extends AbstractMojo {
 		    try {
 			sourceStream.close();
 		    } catch (IOException e) {
-			throw new MojoExecutionException("Could not close file: "
-				+ source.getAbsolutePath(), e);
+			throw new MojoExecutionException(
+				"Could not close file: "
+					+ source.getAbsolutePath(), e);
 		    }
 		}
 	    }
@@ -167,25 +170,26 @@ public class MergeMojo extends AbstractMojo {
 
     /**
      * Appends inputstream to outputstream
-     * @param in {@linkplain InputStream}
-     * @param out {@linkplain OutputStream}
+     * @param input {@linkplain InputStream}
+     * @param output {@linkplain OutputStream}
      * @throws MojoExecutionException
      */
-    protected void appendStream(final InputStream in, final OutputStream out)
-	    throws MojoExecutionException {
+    protected void appendStream(final InputStream input,
+	    final OutputStream output) throws MojoExecutionException {
 	// prebuffer
 	int character;
 	try {
 	    // read & write
-	    while ((character = in.read()) != -1) {
-		out.write(character);
+	    while ((character = input.read()) != -1) {
+		output.write(character);
 	    }
 	    // append newline
-	    out.write("\r\n".getBytes());
+	    output.write("\r\n".getBytes());
 	    // flush
-	    out.flush();
+	    output.flush();
 	} catch (IOException e) {
-	    throw new MojoExecutionException("Error in buffering/writing " + e.getMessage(), e);
+	    throw new MojoExecutionException("Error in buffering/writing "
+		    + e.getMessage(), e);
 	}
     }
 }
