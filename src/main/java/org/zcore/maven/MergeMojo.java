@@ -179,12 +179,14 @@ public class MergeMojo extends AbstractMojo {
 	// prebuffer
 	int character;
 	try {
+	    // get line seperator, based on system
+	    final String newLine = System.getProperty("line.separator");
 	    // read & write
 	    while ((character = input.read()) != -1) {
 		output.write(character);
 	    }
 	    // append newline
-	    output.write("\r\n".getBytes());
+	    output.write(newLine.getBytes());
 	    // flush
 	    output.flush();
 	} catch (IOException e) {
