@@ -17,7 +17,7 @@ import org.apache.maven.plugin.MojoFailureException;
 /**
  * Mojo for merging supplied text files
  *
- * @author Robert Heine <heine@zcore.org>
+ * @author Robert Heine <robert.heine@zcore.org>
  * @goal merge
  * @requiresProject
  */
