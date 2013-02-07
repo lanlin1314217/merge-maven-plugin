@@ -49,3 +49,7 @@ Maven(3) plugin which merges multiple files into one
 &nbsp;&nbsp;[...]
 &lt;/project&gt;
 </pre>
+
+## How to run?
+At the moment do <code>mvn org.zcore.maven:merge-maven-plugin:merge</code>.
+<small>This will be easier in the future</small>
