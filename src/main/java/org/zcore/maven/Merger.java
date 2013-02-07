@@ -46,14 +46,14 @@ public class Merger {
      */
     @Override
     public String toString() {
-	// buffer to return
-	final StringBuffer buffer = new StringBuffer(40);
-	// append stuff
-	buffer.append("Merger [toString()=").append(super.toString()).append(']');
-	buffer.append("[target: ").append(getTarget().toString()).append(']');
-	buffer.append("[source: ").append(Arrays.asList(getSources().toString()))
-		.append(']');
-	// return
-	return buffer.toString();
+        // buffer to return
+        final StringBuffer buffer = new StringBuffer(40);
+        // append stuff
+        buffer.append("Merger [toString()=").append(super.toString()).append(']');
+        buffer.append("[target: ").append(getTarget().toString()).append(']');
+        buffer.append("[source: ").append(Arrays.asList(getSources().toString()))
+            .append(']');
+        // return
+        return buffer.toString();
     }
 }
