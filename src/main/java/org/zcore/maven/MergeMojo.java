@@ -183,7 +183,7 @@ public class MergeMojo extends AbstractMojo {
             final String newLine = System.getProperty("line.separator");
             // read & write
             while ((character = input.read()) != -1) {
-            output.write(character);
+        	output.write(character);
             }
             // append newline
             output.write(newLine.getBytes());
