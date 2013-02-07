@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 /**
  * PoJo holding information for text file merging
- * @author Robert Heine <heine@zcore.org>
+ * @author Robert Heine <robert.heine@zcore.org>
  *
  */
 public class Merger {
