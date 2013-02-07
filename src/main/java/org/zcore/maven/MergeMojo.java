@@ -142,19 +142,19 @@ public class MergeMojo extends AbstractMojo {
             final OutputStream targetStream = initOutput(target);
             // iterate source files
             for (File source : sources) {
-            final InputStream sourceStream = initInput(source);
-            // append
-            appendStream(sourceStream, targetStream);
-            // close source
-            if (null != sourceStream) {
-                try {
-                sourceStream.close();
-                } catch (IOException e) {
-                throw new MojoExecutionException(
-                    "Could not close file: "
-                        + source.getAbsolutePath(), e);
+                final InputStream sourceStream = initInput(source);
+                // append
+                appendStream(sourceStream, targetStream);
+                // close source
+                if (null != sourceStream) {
+                    try {
+                        sourceStream.close();
+                    } catch (IOException e) {
+                        throw new MojoExecutionException(
+                    	    "Could not close file: "
+                    		    + source.getAbsolutePath(), e);
+                    }
                 }
-            }
             }
             // close target
             if (null != targetStream) {
