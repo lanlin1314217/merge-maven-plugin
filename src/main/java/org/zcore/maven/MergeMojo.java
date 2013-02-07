@@ -108,14 +108,14 @@ public class MergeMojo extends AbstractMojo {
         InputStream stream = null;
         try {
             if (file.isDirectory()) {
-            throw new MojoExecutionException("File "
-                + file.getAbsolutePath()
-                + " is directory!");
+                throw new MojoExecutionException("File "
+                    + file.getAbsolutePath()
+                    + " is directory!");
             }
             if (!file.exists()) {
-            throw new MojoExecutionException("File "
-                + file.getAbsolutePath()
-                + " does not exist!");
+                throw new MojoExecutionException("File "
+                    + file.getAbsolutePath()
+                    + " does not exist!");
             }
             stream = new FileInputStream(file);
             //append to outfile here
