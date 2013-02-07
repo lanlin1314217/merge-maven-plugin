@@ -176,7 +176,7 @@ public class MergeMojo extends AbstractMojo {
      */
     protected void appendStream(final InputStream input,
         final OutputStream output) throws MojoExecutionException {
-    // prebuffer
+        // prebuffer
         int character;
         try {
             // get line seperator, based on system
