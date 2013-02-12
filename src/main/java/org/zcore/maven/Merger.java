@@ -25,6 +25,13 @@ public class Merger {
     private transient File[] sources;
 
     /**
+     * If this is set, strip all newlines and rewrite them with
+     * specified characters
+     * @parameter
+     */
+    private transient String rewriteNewlines;
+
+    /**
      * Returns the target filename
      * @return {@linkplain File}
      */
@@ -41,6 +48,14 @@ public class Merger {
     }
 
     /**
+     * Returns rewriting newlines
+     * @return
+     */
+    public String getRewriteNewlines() {
+        return rewriteNewlines;
+    }
+
+    /**
      * Overriding toString() here for debugging
      * @return {@linkplain String}
      */
@@ -53,6 +68,14 @@ public class Merger {
         buffer.append("[target: ").append(getTarget().toString()).append(']');
         buffer.append("[source: ").append(Arrays.asList(getSources().toString()))
             .append(']');
+
+        /**
+         * Append rewriting char for newlines
+         * @since 2013-02-12
+         */
+        if (null != rewriteNewlines) {
+            buffer.append("[newline: ").append(rewriteNewlines).append(']');
+        }
         // return
         return buffer.toString();
     }
