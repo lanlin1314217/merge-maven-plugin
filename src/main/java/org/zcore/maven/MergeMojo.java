@@ -35,6 +35,7 @@ public class MergeMojo extends AbstractMojo {
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;source&gt;src/main/config/extended/application.txt&lt;/source&gt;
      * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;source&gt;src/main/config/default/application.txt&lt;/source&gt;
      * &nbsp;&nbsp;&nbsp;&nbsp;&lt;/sources&gt;
+     * &nbsp;&nbsp;&nbsp;&nbsp;&lt;rewriteNewlines&gt;${newline.character}&lt;/rewriteNewlines&gt;
      * &nbsp;&nbsp;&lt;/merge&gt;
      * &lt;/mergers&gt;
      * </pre>
