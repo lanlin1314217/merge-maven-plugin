@@ -19,7 +19,7 @@
       <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
-  
+
   <developers>
     <developer>
       <id>rob</id>
@@ -63,11 +63,11 @@
     <developerConnection>scm:git:https://github.com/rob19780114/merge-maven-plugin.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
-  
+
   <prerequisites>
     <maven>3.0.4</maven>
   </prerequisites>
-  
+
   <build>
     <defaultGoal>install</defaultGoal>
     <plugins>
