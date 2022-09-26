@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.plugin.AbstractMojo;
@@ -142,10 +143,12 @@ public class MergeMojo extends AbstractMojo {
             // ...and use a stream
             final OutputStream targetStream = initOutput(target);
             // iterate source files
-            for (File source : sources) {
+            Iterator<File> itr = sources.iterator();
+            while (itr.hasNext()) {
+                File source = itr.next();
                 final InputStream sourceStream = initInput(source);
                 // append
-                appendStream(sourceStream, targetStream);
+                appendStream(sourceStream, targetStream, !itr.hasNext());
                 // close source
                 if (null != sourceStream) {
                     try {
@@ -171,28 +174,31 @@ public class MergeMojo extends AbstractMojo {
 
     /**
      * Appends inputstream to outputstream
-     * @param input {@linkplain InputStream}
+     *
+     * @param input  {@linkplain InputStream}
      * @param output {@linkplain OutputStream}
      * @throws MojoExecutionException
      */
     protected void appendStream(final InputStream input,
-        final OutputStream output) throws MojoExecutionException {
+                                final OutputStream output, boolean theLast) throws MojoExecutionException {
         // prebuffer
         int character;
         try {
-            // get line seperator, based on system
-            final String newLine = System.getProperty("line.separator");
             // read & write
             while ((character = input.read()) != -1) {
                 output.write(character);
             }
             // append newline
-            output.write(newLine.getBytes());
+            if (!theLast) {
+                // get line seperator, based on system
+                final String newLine = System.getProperty("line.separator");
+                output.write(newLine.getBytes());
+            }
             // flush
             output.flush();
         } catch (IOException e) {
             throw new MojoExecutionException("Error in buffering/writing "
-                + e.getMessage(), e);
+                    + e.getMessage(), e);
         }
     }
 }
