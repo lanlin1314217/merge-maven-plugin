@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -21,9 +23,11 @@ import org.apache.maven.plugin.MojoFailureException;
  * @author Robert Heine <robert.heine@zcore.org>
  * @goal merge
  * @requiresProject
+ * @threadSafe
  */
 public class MergeMojo extends AbstractMojo {
-
+    private static final Object OBJ = new Object();
+    private static final Hashtable<String, Object> FILE_LOCK = new Hashtable<String, Object>();
     /**
      * Configuration from file
      *
@@ -48,52 +52,53 @@ public class MergeMojo extends AbstractMojo {
 
     /**
      * Opens an OutputStream, based on the supplied file
+     *
      * @param target {@linkplain File}
      * @return {@linkplain OutputStream}
      * @throws MojoExecutionException
      */
     protected OutputStream initOutput(final File file)
-        throws MojoExecutionException {
+            throws MojoExecutionException {
         // stream to return
         final OutputStream stream;
         // plenty of things can go wrong...
         try {
             // directory?
             if (file.isDirectory()) {
-            throw new MojoExecutionException("File "
-                + file.getAbsolutePath() + " is directory!");
+                throw new MojoExecutionException("File "
+                        + file.getAbsolutePath() + " is directory!");
             }
             // already exists && can't remove it?
             if (file.exists() && !file.delete()) {
-            throw new MojoExecutionException("Could not remove file: "
-                + file.getAbsolutePath());
+                throw new MojoExecutionException("Could not remove file: "
+                        + file.getAbsolutePath());
             }
             // get directory above file file
             final File fileDirectory = file.getParentFile();
             // does not exist && create it?
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
-            throw new MojoExecutionException(
-                "Could not create directory: "
-                    + fileDirectory.getAbsolutePath());
+                throw new MojoExecutionException(
+                        "Could not create directory: "
+                                + fileDirectory.getAbsolutePath());
             }
             // moar wtf: parent directory is no directory?
             if (!fileDirectory.isDirectory()) {
-            throw new MojoExecutionException("Not a directory: "
-                + fileDirectory.getAbsolutePath());
+                throw new MojoExecutionException("Not a directory: "
+                        + fileDirectory.getAbsolutePath());
             }
             // file file is for any reason not creatable?
             if (!file.createNewFile()) {
-            throw new MojoExecutionException("Could not create file: "
-                + file.getAbsolutePath());
+                throw new MojoExecutionException("Could not create file: "
+                        + file.getAbsolutePath());
             }
             // finally create some file
             stream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
             throw new MojoExecutionException("Could not find file: "
-                + file.getAbsolutePath(), e);
+                    + file.getAbsolutePath(), e);
         } catch (IOException e) {
             throw new MojoExecutionException("Could not write to file: "
-                + file.getAbsolutePath(), e);
+                    + file.getAbsolutePath(), e);
         }
         // return
         return stream;
@@ -101,35 +106,37 @@ public class MergeMojo extends AbstractMojo {
 
     /**
      * Opens an InputStream, based on the supplied file
+     *
      * @param target {@linkplain File}
      * @return {@linkplain InputStream}
      * @throws MojoExecutionException
      */
     protected InputStream initInput(final File file)
-        throws MojoExecutionException {
+            throws MojoExecutionException {
         InputStream stream = null;
         try {
             if (file.isDirectory()) {
                 throw new MojoExecutionException("File "
-                    + file.getAbsolutePath()
-                    + " is directory!");
+                        + file.getAbsolutePath()
+                        + " is directory!");
             }
             if (!file.exists()) {
                 throw new MojoExecutionException("File "
-                    + file.getAbsolutePath()
-                    + " does not exist!");
+                        + file.getAbsolutePath()
+                        + " does not exist!");
             }
             stream = new FileInputStream(file);
             //append to outfile here
         } catch (FileNotFoundException e) {
             throw new MojoExecutionException("Could not find file: "
-                + file.getAbsolutePath(), e);
+                    + file.getAbsolutePath(), e);
         }
         return stream;
     }
 
     /**
      * Factory Execute
+     *
      * @throws MojoExecutionException
      * @throws MojoFailureException
      */
@@ -138,6 +145,17 @@ public class MergeMojo extends AbstractMojo {
         for (Merger merger : mergers) {
             // get target file name...
             final File target = merger.getTarget();
+            String fileName = target.getAbsolutePath();
+            // cannot ensure reading and writing one file in order,
+            // you shouldn't control file like that
+            // or run maven in single thread
+            synchronized (FILE_LOCK) {
+                if (FILE_LOCK.containsKey(fileName)) {
+                    throw new MojoExecutionException("should not write file: "
+                            + target.getAbsolutePath() + " concurrently");
+                }
+                FILE_LOCK.put(fileName, OBJ);
+            }
             // get list of source files
             final List<File> sources = Arrays.asList(merger.getSources());
             // ...and use a stream
@@ -146,6 +164,11 @@ public class MergeMojo extends AbstractMojo {
             Iterator<File> itr = sources.iterator();
             while (itr.hasNext()) {
                 File source = itr.next();
+                // source file is written by other
+                if (FILE_LOCK.containsKey(source.getAbsolutePath())) {
+                    throw new MojoExecutionException("should not read file: "
+                            + target.getAbsolutePath() + " when it is written by other");
+                }
                 final InputStream sourceStream = initInput(source);
                 // append
                 appendStream(sourceStream, targetStream, !itr.hasNext());
@@ -155,8 +178,8 @@ public class MergeMojo extends AbstractMojo {
                         sourceStream.close();
                     } catch (IOException e) {
                         throw new MojoExecutionException(
-                            "Could not close file: "
-                                + source.getAbsolutePath(), e);
+                                "Could not close file: "
+                                        + source.getAbsolutePath(), e);
                     }
                 }
             }
@@ -166,9 +189,10 @@ public class MergeMojo extends AbstractMojo {
                     targetStream.close();
                 } catch (IOException e) {
                     throw new MojoExecutionException("Could not close file: "
-                        + target.getAbsolutePath(), e);
+                            + target.getAbsolutePath(), e);
                 }
             }
+            FILE_LOCK.remove(fileName);
         }
     }
 
