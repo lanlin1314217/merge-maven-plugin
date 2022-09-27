@@ -26,8 +26,7 @@ import org.apache.maven.plugin.MojoFailureException;
  * @threadSafe
  */
 public class MergeMojo extends AbstractMojo {
-    private static final Object OBJ = new Object();
-    private static final Hashtable<String, Object> FILE_LOCK = new Hashtable<String, Object>();
+    private static final Hashtable<String, Thread> FILE_LOCK = new Hashtable<String, Thread>();
     /**
      * Configuration from file
      *
@@ -154,7 +153,7 @@ public class MergeMojo extends AbstractMojo {
                     throw new MojoExecutionException("should not write file: "
                             + target.getAbsolutePath() + " concurrently");
                 }
-                FILE_LOCK.put(fileName, OBJ);
+                FILE_LOCK.put(fileName, Thread.currentThread());
             }
             // get list of source files
             final List<File> sources = Arrays.asList(merger.getSources());
@@ -164,10 +163,13 @@ public class MergeMojo extends AbstractMojo {
             Iterator<File> itr = sources.iterator();
             while (itr.hasNext()) {
                 File source = itr.next();
-                // source file is written by other
-                if (FILE_LOCK.containsKey(source.getAbsolutePath())) {
-                    throw new MojoExecutionException("should not read file: "
-                            + target.getAbsolutePath() + " when it is written by other");
+                // source file has been written by other
+                synchronized (FILE_LOCK) {
+                    Thread sourceThread = FILE_LOCK.get(source.getAbsolutePath());
+                    if (sourceThread != null && !Thread.currentThread().equals(sourceThread)) {
+                        throw new MojoExecutionException("should not read file: "
+                                + source.getAbsolutePath() + " when it is written by other");
+                    }
                 }
                 final InputStream sourceStream = initInput(source);
                 // append
@@ -192,7 +194,6 @@ public class MergeMojo extends AbstractMojo {
                             + target.getAbsolutePath(), e);
                 }
             }
-            FILE_LOCK.remove(fileName);
         }
     }
 
